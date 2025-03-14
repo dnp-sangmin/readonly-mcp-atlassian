@@ -397,68 +397,68 @@ async def list_tools() -> list[Tool]:
                         "required": ["page_id"],
                     },
                 ),
-                Tool(
-                    name="confluence_create_page",
-                    description="Create a new Confluence page",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "space_key": {
-                                "type": "string",
-                                "description": "The key of the space to create the page in "
-                                "(usually a short uppercase code like 'DEV', 'TEAM', or 'DOC')",
-                            },
-                            "title": {
-                                "type": "string",
-                                "description": "The title of the page",
-                            },
-                            "content": {
-                                "type": "string",
-                                "description": "The content of the page in Markdown format. "
-                                "Supports headings, lists, tables, code blocks, and other "
-                                "Markdown syntax",
-                            },
-                            "parent_id": {
-                                "type": "string",
-                                "description": "Optional parent page ID. If provided, this page "
-                                "will be created as a child of the specified page",
-                            },
-                        },
-                        "required": ["space_key", "title", "content"],
-                    },
-                ),
-                Tool(
-                    name="confluence_update_page",
-                    description="Update an existing Confluence page",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "page_id": {
-                                "type": "string",
-                                "description": "The ID of the page to update",
-                            },
-                            "title": {
-                                "type": "string",
-                                "description": "The new title of the page",
-                            },
-                            "content": {
-                                "type": "string",
-                                "description": "The new content of the page in Markdown format",
-                            },
-                            "is_minor_edit": {
-                                "type": "boolean",
-                                "description": "Whether this is a minor edit",
-                                "default": False,
-                            },
-                            "version_comment": {
-                                "type": "string",
-                                "description": "Optional comment for this version",
-                                "default": "",
-                            },
-                        },
-                        "required": ["page_id", "title", "content"],
-                    },
-                ),
+                # Tool(
+                #     name="confluence_create_page",
+                #     description="Create a new Confluence page",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "space_key": {
+                #                 "type": "string",
+                #                 "description": "The key of the space to create the page in "
+                #                 "(usually a short uppercase code like 'DEV', 'TEAM', or 'DOC')",
+                #             },
+                #             "title": {
+                #                 "type": "string",
+                #                 "description": "The title of the page",
+                #             },
+                #             "content": {
+                #                 "type": "string",
+                #                 "description": "The content of the page in Markdown format. "
+                #                 "Supports headings, lists, tables, code blocks, and other "
+                #                 "Markdown syntax",
+                #             },
+                #             "parent_id": {
+                #                 "type": "string",
+                #                 "description": "Optional parent page ID. If provided, this page "
+                #                 "will be created as a child of the specified page",
+                #             },
+                #         },
+                #         "required": ["space_key", "title", "content"],
+                #     },
+                # ),
+                # Tool(
+                #     name="confluence_update_page",
+                #     description="Update an existing Confluence page",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "page_id": {
+                #                 "type": "string",
+                #                 "description": "The ID of the page to update",
+                #             },
+                #             "title": {
+                #                 "type": "string",
+                #                 "description": "The new title of the page",
+                #             },
+                #             "content": {
+                #                 "type": "string",
+                #                 "description": "The new content of the page in Markdown format",
+                #             },
+                #             "is_minor_edit": {
+                #                 "type": "boolean",
+                #                 "description": "Whether this is a minor edit",
+                #                 "default": False,
+                #             },
+                #             "version_comment": {
+                #                 "type": "string",
+                #                 "description": "Optional comment for this version",
+                #                 "default": "",
+                #             },
+                #         },
+                #         "required": ["page_id", "title", "content"],
+                #     },
+                # ),
                 Tool(
                     name="confluence_delete_page",
                     description="Delete an existing Confluence page",
@@ -574,141 +574,141 @@ async def list_tools() -> list[Tool]:
                         "required": ["project_key"],
                     },
                 ),
-                Tool(
-                    name="jira_create_issue",
-                    description="Create a new Jira issue with optional Epic link",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "project_key": {
-                                "type": "string",
-                                "description": "The JIRA project key (e.g. 'PROJ', 'DEV', 'SUPPORT'). "
-                                "This is the prefix of issue keys in your project. "
-                                "Never assume what it might be, always ask the user.",
-                            },
-                            "summary": {
-                                "type": "string",
-                                "description": "Summary/title of the issue",
-                            },
-                            "issue_type": {
-                                "type": "string",
-                                "description": (
-                                    "Issue type (e.g. 'Task', 'Bug', 'Story', 'Epic'). "
-                                    "The available types depend on your project configuration."
-                                ),
-                            },
-                            "assignee": {
-                                "type": "string",
-                                "description": "Assignee of the ticket (accountID, full name or e-mail)",
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "Issue description",
-                                "default": "",
-                            },
-                            "additional_fields": {
-                                "type": "string",
-                                "description": "Optional JSON string of additional fields to set. "
-                                'Example: \'{"priority": {"name": "High"}, "labels": ["frontend", "urgent"], '
-                                '"components": [{"name": "UI"}]}\'',
-                                "default": "{}",
-                            },
-                        },
-                        "required": ["project_key", "summary", "issue_type"],
-                    },
-                ),
-                Tool(
-                    name="jira_update_issue",
-                    description="Update an existing Jira issue including changing status, adding Epic links, updating fields, etc.",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "issue_key": {
-                                "type": "string",
-                                "description": "Jira issue key (e.g., 'PROJ-123')",
-                            },
-                            "fields": {
-                                "type": "string",
-                                "description": "A valid JSON object of fields to update as a string. "
-                                'Example: \'{"summary": "New title", "description": "Updated description", '
-                                '"priority": {"name": "High"}, "assignee": {"name": "john.doe"}}\'',
-                            },
-                            "additional_fields": {
-                                "type": "string",
-                                "description": "Optional JSON string of additional fields to update. Use this for custom fields or more complex updates.",
-                                "default": "{}",
-                            },
-                        },
-                        "required": ["issue_key", "fields"],
-                    },
-                ),
-                Tool(
-                    name="jira_delete_issue",
-                    description="Delete an existing Jira issue",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "issue_key": {
-                                "type": "string",
-                                "description": "Jira issue key (e.g. PROJ-123)",
-                            },
-                        },
-                        "required": ["issue_key"],
-                    },
-                ),
-                Tool(
-                    name="jira_add_comment",
-                    description="Add a comment to a Jira issue",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "issue_key": {
-                                "type": "string",
-                                "description": "Jira issue key (e.g., 'PROJ-123')",
-                            },
-                            "comment": {
-                                "type": "string",
-                                "description": "Comment text in Markdown format",
-                            },
-                        },
-                        "required": ["issue_key", "comment"],
-                    },
-                ),
-                Tool(
-                    name="jira_add_worklog",
-                    description="Add a worklog entry to a Jira issue",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "issue_key": {
-                                "type": "string",
-                                "description": "Jira issue key (e.g., 'PROJ-123')",
-                            },
-                            "time_spent": {
-                                "type": "string",
-                                "description": (
-                                    "Time spent in Jira format. Examples: "
-                                    "'1h 30m' (1 hour and 30 minutes), "
-                                    "'1d' (1 day), '30m' (30 minutes), "
-                                    "'4h' (4 hours)"
-                                ),
-                            },
-                            "comment": {
-                                "type": "string",
-                                "description": "Optional comment for the worklog in Markdown format",
-                            },
-                            "started": {
-                                "type": "string",
-                                "description": (
-                                    "Optional start time in ISO format. "
-                                    "If not provided, the current time will be used. "
-                                    "Example: '2023-08-01T12:00:00.000+0000'"
-                                ),
-                            },
-                        },
-                        "required": ["issue_key", "time_spent"],
-                    },
-                ),
+                # Tool(
+                #     name="jira_create_issue",
+                #     description="Create a new Jira issue with optional Epic link",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "project_key": {
+                #                 "type": "string",
+                #                 "description": "The JIRA project key (e.g. 'PROJ', 'DEV', 'SUPPORT'). "
+                #                 "This is the prefix of issue keys in your project. "
+                #                 "Never assume what it might be, always ask the user.",
+                #             },
+                #             "summary": {
+                #                 "type": "string",
+                #                 "description": "Summary/title of the issue",
+                #             },
+                #             "issue_type": {
+                #                 "type": "string",
+                #                 "description": (
+                #                     "Issue type (e.g. 'Task', 'Bug', 'Story', 'Epic'). "
+                #                     "The available types depend on your project configuration."
+                #                 ),
+                #             },
+                #             "assignee": {
+                #                 "type": "string",
+                #                 "description": "Assignee of the ticket (accountID, full name or e-mail)",
+                #             },
+                #             "description": {
+                #                 "type": "string",
+                #                 "description": "Issue description",
+                #                 "default": "",
+                #             },
+                #             "additional_fields": {
+                #                 "type": "string",
+                #                 "description": "Optional JSON string of additional fields to set. "
+                #                 'Example: \'{"priority": {"name": "High"}, "labels": ["frontend", "urgent"], '
+                #                 '"components": [{"name": "UI"}]}\'',
+                #                 "default": "{}",
+                #             },
+                #         },
+                #         "required": ["project_key", "summary", "issue_type"],
+                #     },
+                # ),
+                # Tool(
+                #     name="jira_update_issue",
+                #     description="Update an existing Jira issue including changing status, adding Epic links, updating fields, etc.",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "issue_key": {
+                #                 "type": "string",
+                #                 "description": "Jira issue key (e.g., 'PROJ-123')",
+                #             },
+                #             "fields": {
+                #                 "type": "string",
+                #                 "description": "A valid JSON object of fields to update as a string. "
+                #                 'Example: \'{"summary": "New title", "description": "Updated description", '
+                #                 '"priority": {"name": "High"}, "assignee": {"name": "john.doe"}}\'',
+                #             },
+                #             "additional_fields": {
+                #                 "type": "string",
+                #                 "description": "Optional JSON string of additional fields to update. Use this for custom fields or more complex updates.",
+                #                 "default": "{}",
+                #             },
+                #         },
+                #         "required": ["issue_key", "fields"],
+                #     },
+                # ),
+                # Tool(
+                #     name="jira_delete_issue",
+                #     description="Delete an existing Jira issue",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "issue_key": {
+                #                 "type": "string",
+                #                 "description": "Jira issue key (e.g. PROJ-123)",
+                #             },
+                #         },
+                #         "required": ["issue_key"],
+                #     },
+                # ),
+                # Tool(
+                #     name="jira_add_comment",
+                #     description="Add a comment to a Jira issue",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "issue_key": {
+                #                 "type": "string",
+                #                 "description": "Jira issue key (e.g., 'PROJ-123')",
+                #             },
+                #             "comment": {
+                #                 "type": "string",
+                #                 "description": "Comment text in Markdown format",
+                #             },
+                #         },
+                #         "required": ["issue_key", "comment"],
+                #     },
+                # ),
+                # Tool(
+                #     name="jira_add_worklog",
+                #     description="Add a worklog entry to a Jira issue",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "issue_key": {
+                #                 "type": "string",
+                #                 "description": "Jira issue key (e.g., 'PROJ-123')",
+                #             },
+                #             "time_spent": {
+                #                 "type": "string",
+                #                 "description": (
+                #                     "Time spent in Jira format. Examples: "
+                #                     "'1h 30m' (1 hour and 30 minutes), "
+                #                     "'1d' (1 day), '30m' (30 minutes), "
+                #                     "'4h' (4 hours)"
+                #                 ),
+                #             },
+                #             "comment": {
+                #                 "type": "string",
+                #                 "description": "Optional comment for the worklog in Markdown format",
+                #             },
+                #             "started": {
+                #                 "type": "string",
+                #                 "description": (
+                #                     "Optional start time in ISO format. "
+                #                     "If not provided, the current time will be used. "
+                #                     "Example: '2023-08-01T12:00:00.000+0000'"
+                #                 ),
+                #             },
+                #         },
+                #         "required": ["issue_key", "time_spent"],
+                #     },
+                # ),
                 Tool(
                     name="jira_get_worklog",
                     description="Get worklog entries for a Jira issue",
@@ -723,24 +723,24 @@ async def list_tools() -> list[Tool]:
                         "required": ["issue_key"],
                     },
                 ),
-                Tool(
-                    name="jira_link_to_epic",
-                    description="Link an existing issue to an epic",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "issue_key": {
-                                "type": "string",
-                                "description": "The key of the issue to link (e.g., 'PROJ-123')",
-                            },
-                            "epic_key": {
-                                "type": "string",
-                                "description": "The key of the epic to link to (e.g., 'PROJ-456')",
-                            },
-                        },
-                        "required": ["issue_key", "epic_key"],
-                    },
-                ),
+                # Tool(
+                #     name="jira_link_to_epic",
+                #     description="Link an existing issue to an epic",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "issue_key": {
+                #                 "type": "string",
+                #                 "description": "The key of the issue to link (e.g., 'PROJ-123')",
+                #             },
+                #             "epic_key": {
+                #                 "type": "string",
+                #                 "description": "The key of the epic to link to (e.g., 'PROJ-456')",
+                #             },
+                #         },
+                #         "required": ["issue_key", "epic_key"],
+                #     },
+                # ),
                 Tool(
                     name="jira_get_epic_issues",
                     description="Get all issues linked to a specific epic",
@@ -776,44 +776,44 @@ async def list_tools() -> list[Tool]:
                         "required": ["issue_key"],
                     },
                 ),
-                Tool(
-                    name="jira_transition_issue",
-                    description="Transition a Jira issue to a new status",
-                    inputSchema={
-                        "type": "object",
-                        "properties": {
-                            "issue_key": {
-                                "type": "string",
-                                "description": "Jira issue key (e.g., 'PROJ-123')",
-                            },
-                            "transition_id": {
-                                "type": "string",
-                                "description": (
-                                    "ID of the transition to perform. Use the jira_get_transitions tool first "
-                                    "to get the available transition IDs for the issue. "
-                                    "Example values: '11', '21', '31'"
-                                ),
-                            },
-                            "fields": {
-                                "type": "string",
-                                "description": (
-                                    "JSON string of fields to update during the transition. "
-                                    "Some transitions require specific fields to be set. "
-                                    'Example: \'{"resolution": {"name": "Fixed"}}\''
-                                ),
-                                "default": "{}",
-                            },
-                            "comment": {
-                                "type": "string",
-                                "description": (
-                                    "Comment to add during the transition (optional). "
-                                    "This will be visible in the issue history."
-                                ),
-                            },
-                        },
-                        "required": ["issue_key", "transition_id"],
-                    },
-                ),
+                # Tool(
+                #     name="jira_transition_issue",
+                #     description="Transition a Jira issue to a new status",
+                #     inputSchema={
+                #         "type": "object",
+                #         "properties": {
+                #             "issue_key": {
+                #                 "type": "string",
+                #                 "description": "Jira issue key (e.g., 'PROJ-123')",
+                #             },
+                #             "transition_id": {
+                #                 "type": "string",
+                #                 "description": (
+                #                     "ID of the transition to perform. Use the jira_get_transitions tool first "
+                #                     "to get the available transition IDs for the issue. "
+                #                     "Example values: '11', '21', '31'"
+                #                 ),
+                #             },
+                #             "fields": {
+                #                 "type": "string",
+                #                 "description": (
+                #                     "JSON string of fields to update during the transition. "
+                #                     "Some transitions require specific fields to be set. "
+                #                     'Example: \'{"resolution": {"name": "Fixed"}}\''
+                #                 ),
+                #                 "default": "{}",
+                #             },
+                #             "comment": {
+                #                 "type": "string",
+                #                 "description": (
+                #                     "Comment to add during the transition (optional). "
+                #                     "This will be visible in the issue history."
+                #                 ),
+                #             },
+                #         },
+                #         "required": ["issue_key", "transition_id"],
+                #     },
+                # ),
             ]
         )
 
